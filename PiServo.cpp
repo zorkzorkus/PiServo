@@ -98,6 +98,18 @@ void MoveMilli() {
 	Move(INT32(48 * x), INT32(48 * y));
 }
 
+void MoveHorizMilli() {
+	cout << "Move Horizontal: ";
+	FLOAT x = GetFloatInput();
+	Move(INT32(48 * x), 0);
+}
+
+void MoveVertMilli() {
+	cout << "Move Vertical: ";
+	FLOAT y = GetFloatInput();
+	Move(0, INT32(48 * y));
+}
+
 void Reset() {
 	Move(-Pos[X], -Pos[Y]);
 }
@@ -109,6 +121,8 @@ INT32 GetProgramInput() {
 	cout << " 0: Set Sleeptime" << endl;
 	cout << " 1: Move Steps" << endl;
 	cout << " 2: Move Millimeter" << endl;
+	cout << " 4: Move Horizontal Milli" << endl;
+	cout << " 6: Move Vertical Milli" << endl;
 	cout << " 5: Reset" << endl;
 	cout << "--------------------\n > ";
 	return GetIntInput();
@@ -133,8 +147,14 @@ int main() {
 		case 2:
 			MoveMilli();
 			break;
+		case 4:
+			MoveHorizMilli();
+			break;
 		case 5:
 			Reset();
+			break;
+		case 6:
+			MoveVertMilli();
 			break;
 		}
 

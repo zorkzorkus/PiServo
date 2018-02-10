@@ -1,6 +1,3 @@
-#include <iostream>
-#include <chrono>
-
 #include "PiServo.hpp"
 
 using namespace std;

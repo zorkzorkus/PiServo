@@ -74,6 +74,10 @@ void Move(INT32 x, INT32 y) {
 
 }
 
+void MoveMilli(FLOAT x, FLOAT y) {
+		Move(static_cast<INT32>(48 * x), static_cast<INT32>(48 * y));
+}
+
 void SetSleepTime() {
 	cout << "Current SleepTime: " << sleepTimeMS << "ms\n > ";
 	FLOAT input = GetFloatInput();
@@ -81,7 +85,7 @@ void SetSleepTime() {
 	sleepTimeMS = input;
 }
 
-void MoveStep() {
+void MoveStepQuery() {
 	cout << "Steps Horizontal: ";
 	int x = GetIntInput();
 	cout << "Steps Vertical: ";
@@ -90,21 +94,21 @@ void MoveStep() {
 }
 
 //using millimeters
-void MoveMilli() {
+void MoveMilliQuery() {
 	cout << "Move Horizontal: ";
 	FLOAT x = GetFloatInput();
 	cout << "Move Vertical: ";
 	FLOAT y = GetFloatInput();
-	Move(INT32(48 * x), INT32(48 * y));
+	MoveMilli(x, y);
 }
 
-void MoveHorizMilli() {
+void MoveHorizMilliQuery() {
 	cout << "Move Horizontal: ";
 	FLOAT x = GetFloatInput();
 	Move(INT32(48 * x), 0);
 }
 
-void MoveVertMilli() {
+void MoveVertMilliQuery() {
 	cout << "Move Vertical: ";
 	FLOAT y = GetFloatInput();
 	Move(0, INT32(48 * y));
@@ -114,6 +118,16 @@ void Reset() {
 	Move(-Pos[X], -Pos[Y]);
 }
 
+void Parabola() {
+	constexpr INT32 resolution = 20;
+	constexpr FLOAT width = 20/*mm*/; // 3cm
+	for (INT32 i = 0; i < resolution; ++i) {
+		constexpr FLOAT x = width / resolution;
+		FLOAT y = pow(i / 10.f, 2);
+		MoveMilli(x, y);
+	}
+}
+
 INT32 GetProgramInput() {
 	ClearConsole();
 	cout << "--------------------\n";
@@ -121,6 +135,7 @@ INT32 GetProgramInput() {
 	cout << " 0: Set Sleeptime" << endl;
 	cout << " 1: Move Steps" << endl;
 	cout << " 2: Move Millimeter" << endl;
+	cout << " 3: Parabola" << endl;
 	cout << " 4: Move Horizontal Milli" << endl;
 	cout << " 6: Move Vertical Milli" << endl;
 	cout << " 5: Reset" << endl;
@@ -142,19 +157,22 @@ int main() {
 			SetSleepTime();
 			break;
 		case 1:
-			MoveStep();
+			MoveStepQuery();
 			break;
 		case 2:
-			MoveMilli();
+			MoveMilliQuery();
+			break;
+		case 3:
+			Parabola();
 			break;
 		case 4:
-			MoveHorizMilli();
+			MoveHorizMilliQuery();
 			break;
 		case 5:
 			Reset();
 			break;
 		case 6:
-			MoveVertMilli();
+			MoveVertMilliQuery();
 			break;
 		}
 

@@ -74,8 +74,12 @@ void Move(INT32 x, INT32 y) {
 
 }
 
+float GetPosMilli(Motor m) {
+	return Pos[m] / 48.f;
+}
+
 void MoveMilli(FLOAT x, FLOAT y) {
-		Move(static_cast<INT32>(48 * x), static_cast<INT32>(48 * y));
+	Move(static_cast<INT32>(48 * x), static_cast<INT32>(48 * y));
 }
 
 void SetSleepTime() {
@@ -120,7 +124,7 @@ void Reset() {
 
 void Parabola() {
 	constexpr INT32 resolution = 20;
-	constexpr FLOAT width = 20/*mm*/; // 3cm
+	constexpr FLOAT width = 20/*mm*/; // 2cm
 	for (INT32 i = 0; i < resolution; ++i) {
 		constexpr FLOAT x = width / resolution;
 		FLOAT y = pow(i / 10.f, 2);
@@ -137,10 +141,22 @@ INT32 GetProgramInput() {
 	cout << " 2: Move Millimeter" << endl;
 	cout << " 3: Parabola" << endl;
 	cout << " 4: Move Horizontal Milli" << endl;
-	cout << " 6: Move Vertical Milli" << endl;
 	cout << " 5: Reset" << endl;
+	cout << " 6: Move Vertical Milli" << endl;
+	cout << " 9: NetworkPoint" << endl;
 	cout << "--------------------\n > ";
 	return GetIntInput();
+}
+
+void NetworkPoint() {
+	std::vector<Point> points = Network::GetPointsNetwork();
+
+	for (auto& p : points) {
+		float x = p.x - GetPosMilli(Motor::X);
+		float y = p.y - GetPosMilli(Motor::Y);
+		MoveMilli(x, y);
+	}
+
 }
 
 
@@ -173,6 +189,9 @@ int main() {
 			break;
 		case 6:
 			MoveVertMilliQuery();
+			break;
+		case 9:
+			NetworkPoint();
 			break;
 		}
 
